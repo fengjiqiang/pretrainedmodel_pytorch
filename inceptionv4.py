@@ -305,8 +305,13 @@ class InceptionV4(nn.Module):
 
     def forward(self, input):
         x = self.features(input)
-        x = self.logits(x)
-        return x
+        feature1 = x
+        x = self.avg_pool(x)
+        x = x.view(x.size(0), -1)
+        feature2 = x
+        x = self.last_linear(x)
+        # x = self.logits(x)
+        return x, feature1, feature2
 
 
 def inceptionv4(num_classes=1000, pretrained='imagenet'):
